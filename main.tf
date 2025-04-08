@@ -1,5 +1,5 @@
 module "vpc" {
-  source = "./vpc"
+  source = "./modules/vpc"
   vpc_cidr = var.vpc_cidr
   public_availability_zone = var.public_availability_zone
   private_availability_zone = var.private_availability_zone
@@ -8,7 +8,7 @@ module "vpc" {
 }
 
 module "alb" {
-  source          = "./alb"
+  source          = "./modules/alb"
   subnets_id      = module.vpc.subnet_ids[*]
   security_groups = [module.sg.security_group_id]
   alb_name = var.alb_name
@@ -16,7 +16,7 @@ module "alb" {
 }
 
 module "ec2" {
-  source             = "./ec2"
+  source             = "./modules/ec2"
   subnet_id          = module.vpc.subnet_ids[0]
   ami_id             = var.ami_id
   instance_type      = var.instance_type
@@ -26,7 +26,7 @@ module "ec2" {
 }
 
 module "sg" {
-  source = "./sg"
+  source = "./modules/sg"
   vpc_id = module.vpc.vpc_id
   default_tags = var.default_tags
   
